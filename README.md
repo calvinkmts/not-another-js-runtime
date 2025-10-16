@@ -6,7 +6,7 @@ Creating a javascript where user can run their created javascript code, to be ru
 
 ## References
 
-- [Roll your own Javascript Runtime](https://deno.com/blog/roll-your-own-javascript-runtime)a
+- [Roll your own Javascript Runtime](https://deno.com/blog/roll-your-own-javascript-runtime)
 - [Roll your own Javascript Runtime, pt 2](https://deno.com/blog/roll-your-own-javascript-runtime-pt2)
 - [Roll your own Javascript Runtime, pt 3](https://deno.com/blog/roll-your-own-javascript-runtime-pt3)
 
