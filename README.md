@@ -4,6 +4,11 @@
 
 Creating a javascript where user can run their created javascript code, to be run on the server.
 
+## Quick Intro to Rust
+
+- [Learn Rust in Y Minutes](https://learnxinyminutes.com/rust/)
+- [A half-hour to learn Rust](https://fasterthanli.me/articles/a-half-hour-to-learn-rust)
+
 ## References
 
 - [Roll your own Javascript Runtime](https://deno.com/blog/roll-your-own-javascript-runtime)
