@@ -1,0 +1,19 @@
+[package]
+name = "runtime-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+deno_ast = { version = "0.44.0", default-features = false, features = ["transpiling"] }
+deno_core = "0.338.0"
+deno_error = "0.5.6"
+reqwest = "0.12"
+tokio = { version = "1.43", features = ["full"] }
+
+# Explicitly pin serde to a version known to work with older swc_* crates
+# serde = { version = "=1.0.197", features = ["derive"] }
+# serde_derive = "=1.0.197"
+
+[dev-dependencies]
+tokio = { version = "1.43", features = ["full"] }
+tempfile = "2"
