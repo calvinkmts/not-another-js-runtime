@@ -21,6 +21,8 @@ these are the thing I will try to replicate in smaller scale.
 
 - [How Worker works - Cloudflare Workers docs](https://developers.cloudflare.com/workers/reference/how-workers-works/)
 - [Unpacking Cloudflare Workers CPU Performance Benchmarks](https://blog.cloudflare.com/unpacking-cloudflare-workers-cpu-performance-benchmarks/)
+- [How to reuse full-featured Deno in my Rust Project? - Stack Overflow](https://stackoverflow.com/questions/79486773/how-to-reuse-full-featured-deno-in-my-rust-project)
 
+## Project Examples
 
-  
+- [Edge Runtime by Supabase](https://github.com/supabase/edge-runtime)
