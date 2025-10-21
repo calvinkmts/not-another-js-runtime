@@ -1,7 +1,13 @@
-use deno_core::{JsRuntime, RuntimeOptions, anyhow::Ok};
+use anyhow::{Ok, Result};
+use deno_core::{extension, JsRuntime, ModuleSpecifier, RuntimeOptions};
+use ops_fs::{op_read_file, op_remove_file, op_write_file};
+use std::rc::Rc;
+use ts_loader::TsModuleLoader;
 
 mod ops_fs;
 mod ts_loader;
+
+extension!(najsr, ops = [op_read_file, op_write_file, op_remove_file,]);
 
 pub struct RuntimeHandle {
     rt: JsRuntime,
@@ -10,7 +16,8 @@ pub struct RuntimeHandle {
 impl RuntimeHandle {
     pub fn new_with_loader() -> Result<Self> {
         let mut rt = JsRuntime::new(RuntimeOptions {
-            extensions: vec![ops_fs::ext_fs()],
+            module_loader: Some(Rc::new(TsModuleLoader)),
+            extensions: vec![najsr::init_ops()],
             ..Default::default()
         });
 
@@ -20,7 +27,16 @@ impl RuntimeHandle {
         Ok(Self { rt })
     }
 
-    pub fn js_runtime_mut(&mut self) -> &mut JsRuntime {
-        &mut self.rt
+    pub async fn eval_main(&mut self, path: &str) -> Result<()> {
+        let abs = std::fs::canonicalize(path)?;
+        let spec = ModuleSpecifier::from_file_path(&abs)
+            .map_err(|_| anyhow::anyhow!("Cannot convert {}", abs.display()))?;
+
+        let mod_id = self.rt.load_main_es_module(&spec).await?;
+        let result = self.rt.mod_evaluate(mod_id);
+
+        result.await?;
+
+        Ok(())
     }
 }
