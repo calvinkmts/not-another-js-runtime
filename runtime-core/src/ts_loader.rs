@@ -1,8 +1,9 @@
 use deno_ast::{MediaType, ParseParams};
-use deno_core::{anyhow::Ok, url::form_urlencoded::Parse, ModuleLoadResponse, ModuleSourceCode};
+use deno_core::error::ModuleLoaderError;
+use deno_core::{ModuleLoadResponse, ModuleSourceCode};
 use deno_error::JsErrorBox;
 
-struct TsModuleLoader;
+pub struct TsModuleLoader;
 
 impl deno_core::ModuleLoader for TsModuleLoader {
     fn resolve(
@@ -10,7 +11,7 @@ impl deno_core::ModuleLoader for TsModuleLoader {
         specifier: &str,
         referrer: &str,
         _kind: deno_core::ResolutionKind,
-    ) -> Result<deno_core::ModuleSpecifier, deno_core::error::ModuleLoaderError> {
+    ) -> Result<deno_core::ModuleSpecifier, ModuleLoaderError> {
         deno_core::resolve_import(specifier, referrer).map_err(Into::into)
     }
 
@@ -20,7 +21,7 @@ impl deno_core::ModuleLoader for TsModuleLoader {
         _maybe_referrer: Option<&reqwest::Url>,
         _is_dyn_import: bool,
         _requested_module_type: deno_core::RequestedModuleType,
-    ) -> deno_core::ModuleLoadResponse {
+    ) -> ModuleLoadResponse {
         let module_specifier = module_specifier.clone();
 
         let module_load = move || {
@@ -29,7 +30,7 @@ impl deno_core::ModuleLoader for TsModuleLoader {
             let media_type = MediaType::from_path(&path);
 
             let (module_type, should_transpile) = match MediaType::from_path(&path) {
-                MediaType::JavaScript | MediaType::Cjs => {
+                MediaType::JavaScript | MediaType::Mjs | MediaType::Cjs => {
                     (deno_core::ModuleType::JavaScript, false)
                 }
                 MediaType::Jsx => (deno_core::ModuleType::JavaScript, true),
@@ -40,8 +41,8 @@ impl deno_core::ModuleLoader for TsModuleLoader {
                 | MediaType::Dmts
                 | MediaType::Dcts
                 | MediaType::Tsx => (deno_core::ModuleType::JavaScript, true),
-                MediaType::Json => (deno_core::ModuleType::JavaScript, false),
-                _ => panic!("unknown extension {:?}", path.extension()),
+                MediaType::Json => (deno_core::ModuleType::Json, false),
+                _ => panic!("Unknown extension {:?}", path.extension()),
             };
 
             let code = std::fs::read_to_string(&path)?;
