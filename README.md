@@ -2,7 +2,11 @@
 
 ## Background
 
-Creating a javascript where user can run their created javascript code, to be run on the server.
+Creating a javascript runtime where user can run their javascript/typescript code, to be run on the server.
+
+### Proposed Diagram
+
+![Architecture](./assets/najsr-diagram.png)
 
 ## Quick Intro to Rust
 
