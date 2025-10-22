@@ -30,3 +30,4 @@ these are the thing I will try to replicate in smaller scale.
 ## Project Examples
 
 - [Edge Runtime by Supabase](https://github.com/supabase/edge-runtime)
+- [Backend as a Service](https://gist.github.com/PARC6502/ee4db400a05e6eb6d0981bb8cd4e4c1c)
